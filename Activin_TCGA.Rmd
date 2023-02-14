@@ -50,7 +50,7 @@ library(ggplot2)
 ```
 
 ```{r message= FALSE, warning= FALSE, echo=FALSE}
-sample_meta_data <- read.csv("~/Desktop/Elizabeth_Figures/TCGA_meta.csv")
+sample_meta_data <- read.csv("~/Desktop/Elizabeth_Paper_Activin/TCGA_meta_with_activin.csv")
 sampleNames <- sample_meta_data$From_Original_Order
 figo_stage <- sample_meta_data$figo_stage
 
@@ -69,8 +69,7 @@ dds <- dds[idx,]
 
 
 ```{r message= FALSE, warning= FALSE, echo=FALSE}
-library(BiocParallel)
-dds <- DESeq(dds, quiet=TRUE, parallel=TRUE, BPPARAM=MulticoreParam(3))
+dds <- DESeq(dds)
 ```
 
 
@@ -98,6 +97,7 @@ plotMA(res, ylim= c(-2,2))
 #Analysis of Genes of Interest by Stage 
 #### INHA 
 ```{r}
+col <- c("Stage I" = , "Stage II" = ,"Stage III"= , "StageIV"=)
 counts <- counts(dds['ENSG00000123999.4', ], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
