@@ -27,8 +27,8 @@ tx2gene <- select(txdb, k, "GENEID", "TXNAME")
 
 ```{r message= FALSE, warning= FALSE, echo=FALSE}
 dir <- "~/Documents/Mythreye_Lab/quants"
-samples <- read.csv(file= "~/Desktop/Elizabeth_Paper_Activin/data_import_benign_vs_tumor.csv")
-files <- file.path(dir, samples$SRR,"quant.sf")
+samples <- read.csv(file= "~/Desktop/Elizabeth_Paper_Activin/Elizabeth_meta_benign_vs_tumor_activin.csv")
+files <- file.path(dir, samples$Sample,"quant.sf")
 all(file.exists(files))
 ```
 
@@ -36,9 +36,8 @@ all(file.exists(files))
 ```{r message= FALSE, warning= FALSE, echo=FALSE}
 txi <- tximport(files, type = "salmon", tx2gene= tx2gene, ignoreAfterBar= TRUE)
 names(txi)
-sample_meta_data <- read.csv(file= "~/Desktop/Elizabeth_Paper_Activin/Elizabeth_meta_benign_vs_tumor.csv")
-sampleFiles <- samples$SRR
-sampleCondition <- sample_meta_data$Tumor..Normal
+sampleFiles <- samples$Sample
+sampleCondition <- samples$Tumor..Normal
 sampleTable <- data.frame(sampleName = sampleFiles,
                           fileName = sampleFiles,
                           condition = sampleCondition)
@@ -48,7 +47,6 @@ dds <- DESeq(dds)
 res <- results(dds)
 write.csv(res, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/results_benign_vs_serous_cooper.csv")
 ```
-
 
 
 ```{r}
@@ -265,7 +263,7 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/cou
 
 #ACTIVIN
 ```{r message= FALSE, warning= FALSE, echo=FALSE}
-sampleCondition <- sample_meta_data$Activin
+sampleCondition <- samples$Activin
 sampleTable <- data.frame(sampleName = sampleFiles,
                           fileName = sampleFiles,
                           condition = sampleCondition)
@@ -289,8 +287,8 @@ col <- c("Low"= "#21918c", "Intermediate"= "#31688e", "High"= "#481f70")
 counts <- counts(dds['ENSG00000122641.9',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
-q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group)) + geom_jitter(width= 0.1)
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of INHBA")
 q
 ```
@@ -306,7 +304,7 @@ counts <- counts(dds['ENSG00000121989.10',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of ACVR2A")
 q
 ```
@@ -322,7 +320,7 @@ counts <- counts(dds['ENSG00000114739.9',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of ACVR2B")
 q
 ```
@@ -338,7 +336,7 @@ counts <- counts(dds['ENSG00000049768.10',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of FOXP3")
 q
 ```
@@ -354,7 +352,7 @@ counts <- counts(dds['ENSG00000163083.5',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of INHBB")
 q
 ```
@@ -370,7 +368,7 @@ counts <- counts(dds['ENSG00000135503.8',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of ACVR1B")
 q
 ```
@@ -386,7 +384,7 @@ counts <- counts(dds['ENSG00000123612.11',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of ACVR1C")
 q
 ```
@@ -402,7 +400,7 @@ counts <- counts(dds['ENSG00000153563.11',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of CD8A")
 q
 ```
@@ -418,7 +416,7 @@ counts <- counts(dds['ENSG00000160654.5',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of CD3G")
 q
 ```
@@ -434,7 +432,7 @@ counts <- counts(dds['ENSG00000149968.7',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of MMP3")
 q
 ```
@@ -450,7 +448,7 @@ counts <- counts(dds['ENSG00000137745.7',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of MMP13")
 q
 ```
@@ -466,7 +464,7 @@ counts <- counts(dds['ENSG00000010610.5',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of CD4")
 q
 ```
@@ -482,7 +480,7 @@ counts <- counts(dds['ENSG00000134460.11',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleCondition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Low","Intermediate", "High"))
 q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of CD25/ ILR2A")
 q
 ```
