@@ -98,7 +98,7 @@ plotMA(res, ylim= c(-2,2))
 #Analysis of Genes of Interest by Stage 
 #### INHA 
 ```{r}
-col <- c("Stage I" = "#fde725", "Stage II" = "#c8e020" ,"Stage III"= "#5ec962", "StageIV"= "#35b779")
+col <- c("Stage I" = "#fde725", "Stage II" = "#c8e020" ,"Stage III"= "#5ec962", "Stage IV" = "#35b779")
 ```
 
 
@@ -106,8 +106,8 @@ col <- c("Stage I" = "#fde725", "Stage II" = "#c8e020" ,"Stage III"= "#5ec962", 
 counts <- counts(dds['ENSG00000123999.4', ], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <- q + labs(y = "Normalized Counts", title = "Expression of INHA") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of INHA") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -121,14 +121,14 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_INHA.c
 counts <- counts(dds['ENSG00000122641.10' , ], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <- q + labs(y = "Normalized Counts", title = "Expression of INHBA") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of INHBA") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
 ```{r}
 ggsave("~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/INHBA.tiff", plot = last_plot())
-write.csv(counts, "~/DesktopElizabeth_Paper_Activin/TCGA/By_Stage/counts_INHBA.csv")
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_INHBA.csv")
 ```
 
 #### ACVR2A
@@ -136,8 +136,8 @@ write.csv(counts, "~/DesktopElizabeth_Paper_Activin/TCGA/By_Stage/counts_INHBA.c
 counts <- counts(dds['ENSG00000121989.14',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
-q <- q + labs(y = "Normalized Counts", title = "Expression of ACVR2A") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of ACVR2A") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -151,7 +151,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_ACVR2A
 counts <- counts(dds['ENSG00000114739.13',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of ACVR2B") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q= ggplot(m, aes(group, counts)) + geom_jitter(width=0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of ACVR2B") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -165,7 +166,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_ACVR2B
 counts <- counts(dds['ENSG00000049768.14',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of FOXP3") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of FOXP3")+ theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -179,7 +181,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_FOXP3.
 counts <- counts(dds['ENSG00000163083.5',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of INHBB") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of INHBB") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -193,7 +196,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_INHBB.
 counts <- counts(dds['ENSG00000135503.12',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of ACVR1B") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of ACVR1B") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -207,7 +211,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_ACVR1B
 counts <- counts(dds['ENSG00000123612.15',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of ACVR1C") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of ACVR1C") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -221,7 +226,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_ACVR1C
 counts <- counts(dds['ENSG00000153563.15',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of CD8A") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of CD8A")+ theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -235,7 +241,8 @@ write.csv(counts, "~/DesktopElizabeth_Paper_Activin/TCGA/By_Stage/countsCD8A.csv
 counts <- counts(dds['ENSG00000160654.9',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of CD3G") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of CD3G") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -249,7 +256,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_CD3G.c
 counts <- counts(dds['ENSG00000149968.11',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of MMP3") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of MMP3") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -263,8 +271,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage//counts_MMP3.
 counts <- counts(dds['ENSG00000137745.11',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of MMP13") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
-q
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of MMP13")+ theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -278,7 +286,8 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_MMP13.
 counts <- counts(dds['ENSG00000010610.9',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of CD4") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of CD4") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
 
@@ -292,41 +301,37 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_CD4.cs
 counts <- counts(dds['ENSG00000134460.15',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of CD25") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of CD25")+ theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
-
-
 ```{r}
 ggsave("~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/CD25.tiff", plot = last_plot())
 write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_CD25.csv")
 ```
-
 
 #### MYC 
 ```{r}
 counts <- counts(dds['ENSG00000136997.16',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of MYC") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of MYC") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 q
 ```
-
 
 ```{r}
 ggsave("~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/MYC.tiff", plot = last_plot())
 write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_MYC.csv")
 ```
 
-
 #### CXCR4
 ```{r}
 counts <- counts(dds['ENSG00000121966.6',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
-q <- q + labs(y = "Normalized Counts", title = "Expression of CXCR4") + theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I","Stage II","Stage III", "Stage IV")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group)
-q
-q
+q <- ggplot(m, aes(group, counts)) + geom_jitter(width= 0.1)
+q <- q + labs(y = "Normalized Counts", title = "Expression of CXCR4")+ theme(legend.position= "none") + labs(x= "Stage") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_x_discrete(limits=c("Stage I", "Stage II","Stage III", "Stage IV")) + aes(color= group) + scale_color_manual(values = alpha(col, 1.0))
 ```
 
 
@@ -344,7 +349,6 @@ write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Stage/counts_CXCR4.
 Redo with metadata
 
 ```{r message= FALSE, warning= FALSE, echo=FALSE}
-sample_meta_data <- read.csv("~/Desktop/Elizabeth_Figures/Meta Data/TCGA_meta_with_activin.csv")
 sampleNames <- sample_meta_data$From_Original_Order
 activin <- sample_meta_data$Activin_Level
 sampleTable <- data.frame(sampleName = sampleNames,
@@ -404,7 +408,7 @@ q
 ```
 
 ```{r}
-ggsave("~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Activin/activin_INHBA.tiff", plot = last_plot())
+ggsave("~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Activin/activin_INHBA.tiff",  plot = last_plot())
 write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/TCGA/By_Activin/counts_activin_INHBA.csv")
 ```
 
