@@ -1,0 +1,494 @@
+---
+title: "Activin_Cooper"
+output: html_document
+date: "2023-02-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message= FALSE, warning= FALSE, echo=FALSE}
+library(tximport)
+library(GenomicFeatures)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(DESeq2)
+library(tibble)
+library(ggplot2)
+```
+
+
+```{r message= FALSE, warning= FALSE, echo=FALSE}
+txdb <- loadDb("~/Documents/Mythreye_Lab/Lab_RNAseq_Tutorial/gencode.v19.annotation.gtf_withproteinids.TxDb")
+k <- keys(txdb, keytype = "TXNAME")
+tx2gene <- select(txdb, k, "GENEID", "TXNAME")
+```
+
+
+```{r message= FALSE, warning= FALSE, echo=FALSE}
+dir <- "~/Documents/Mythreye_Lab/quants"
+samples <- read.csv(file= "~/Desktop/Elizabeth_Paper_Activin/data_import_benign_vs_tumor.csv")
+files <- file.path(dir, samples$SRR,"quant.sf")
+all(file.exists(files))
+```
+
+
+```{r message= FALSE, warning= FALSE, echo=FALSE}
+txi <- tximport(files, type = "salmon", tx2gene= tx2gene, ignoreAfterBar= TRUE)
+names(txi)
+sample_meta_data <- read.csv(file= "~/Desktop/Elizabeth_Paper_Activin/Elizabeth_meta_benign_vs_tumor.csv")
+sampleFiles <- samples$SRR
+sampleCondition <- sample_meta_data$Tumor..Normal
+sampleTable <- data.frame(sampleName = sampleFiles,
+                          fileName = sampleFiles,
+                          condition = sampleCondition)
+sampleTable$condition <- factor(sampleTable$condition)
+dds <- DESeqDataSetFromTximport(txi, sampleTable, ~condition)
+dds <- DESeq(dds)
+res <- results(dds)
+write.csv(res, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/results_benign_vs_serous_cooper.csv")
+```
+
+
+
+```{r}
+col <- c("Benign"= "#21918c", "HGSOC"= "#481f70")
+```
+
+#### INHBA
+```{r}
+counts <- counts(dds['ENSG00000122641.9',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts", title = "Expression of INHBA")
+q
+```
+
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_INHBA.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_INHBA.csv")
+```
+
+#### ACVR2A
+```{r}
+counts <- counts(dds['ENSG00000121989.10',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of ACVR2A")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_ACVR2A.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_ACVR2A.csv")
+```
+
+#### ACVR2B
+```{r}
+counts <- counts(dds['ENSG00000114739.9',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of ACVR2B")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_ACVR2B.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_ACVR2B.csv")
+```
+
+#### FOXP3
+```{r}
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of FOXP3")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_FOXP3.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_FOXP3.csv")
+```
+
+#### INHBB
+```{r}
+counts <- counts(dds['ENSG00000163083.5',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of INHBB")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_INHBB.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_INHBB.csv")
+```
+
+#### ACVR1B
+```{r}
+counts <- counts(dds['ENSG00000135503.8',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of ACVR1B")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_ACVR1B.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_ACVR1B.csv")
+```
+
+#### ACVR1C
+```{r}
+counts <- counts(dds['ENSG00000123612.11',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of ACVR1C")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_ACVR1C.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_ACVR1C.csv")
+```
+
+#### CD8A
+```{r}
+counts <- counts(dds['ENSG00000153563.11',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of CD8A")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_CD8A.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_CD8A.csv")
+```
+
+#### CD3G
+```{r}
+counts <- counts(dds['ENSG00000160654.5',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of CD3G")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_CD3G.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_CD3G.csv")
+```
+
+#### MMP3 
+```{r}
+counts <- counts(dds['ENSG00000149968.7',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of MMP3")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_MMP3.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_MMP3.csv")
+```
+
+#### MMP13
+```{r}
+counts <- counts(dds['ENSG00000137745.7',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of MMP13")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_MMP13.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_MMP13.csv")
+```
+
+#### CD4
+```{r}
+counts <- counts(dds['ENSG00000010610.5',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression of CD4")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_CD4.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_CD4.csv")
+```
+
+#### CD25/ ILR2A
+```{r}
+counts <- counts(dds['ENSG00000134460.11',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + labs(x= "Tissue Type") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(y = "Normalized Counts ", title = "Expression CD25/ ILR2A")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/benign_tumor_CD25.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Benign_vs_Serous/counts_benign_tumor_CD25.csv")
+```
+
+#ACTIVIN
+```{r message= FALSE, warning= FALSE, echo=FALSE}
+sampleCondition <- sample_meta_data$Activin
+sampleTable <- data.frame(sampleName = sampleFiles,
+                          fileName = sampleFiles,
+                          condition = sampleCondition)
+sampleTable$condition <- factor(sampleTable$condition)
+dds <- DESeqDataSetFromTximport(txi, sampleTable, ~condition)
+dds <- DESeq(dds)
+res <- results(dds,  contrast=c("condition","High","Low"))
+res_2 <- results(dds,  contrast=c("condition","Low","High"))
+write.csv(res, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/results_DeSeq2_condition_high_low.csv")
+write.csv(res_2, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/results_DeSeq2_condition_low_high.csv")
+```
+
+
+```{r}
+col <- c("Low"= "#21918c", "Intermediate"= "#31688e", "High"= "#481f70")
+```
+
+
+#### INHBA
+```{r}
+counts <- counts(dds['ENSG00000122641.9',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of INHBA")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_INHBA.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_INHBA.csv")
+```
+
+#### ACVR2A
+```{r}
+counts <- counts(dds['ENSG00000121989.10',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of ACVR2A")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_ACVR2A.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_ACVR2A.csv")
+```
+
+#### ACVR2B
+```{r}
+counts <- counts(dds['ENSG00000114739.9',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of ACVR2B")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_ACVR2B.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_ACVR2B.csv")
+```
+
+#### FOXP3
+```{r}
+counts <- counts(dds['ENSG00000049768.10',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of FOXP3")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_FOXP3.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_FOXP3.csv")
+```
+
+#### INHBB
+```{r}
+counts <- counts(dds['ENSG00000163083.5',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of INHBB")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_INHBB.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_INHBB.csv")
+```
+
+#### ACVR1B
+```{r}
+counts <- counts(dds['ENSG00000135503.8',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of ACVR1B")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_ACVR1B.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_ACVR1B.csv")
+```
+
+#### ACVR1C
+```{r}
+counts <- counts(dds['ENSG00000123612.11',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of ACVR1C")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_ACVR1C.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_ACVR1C.csv")
+```
+
+#### CD8A
+```{r}
+counts <- counts(dds['ENSG00000153563.11',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of CD8A")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_CD8A.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_CD8A.csv")
+```
+
+#### CD3G
+```{r}
+counts <- counts(dds['ENSG00000160654.5',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of CD3G")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_CD3G.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_CD3G.csv")
+```
+
+#### MMP3 
+```{r}
+counts <- counts(dds['ENSG00000149968.7',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of MMP3")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_MMP3.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_MMP3.csv")
+```
+
+#### MMP13
+```{r}
+counts <- counts(dds['ENSG00000137745.7',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of MMP13")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_MMP13.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_MMP13.csv")
+```
+
+#### CD4
+```{r}
+counts <- counts(dds['ENSG00000010610.5',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of CD4")
+q
+```
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_CD4.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_CD4.csv")
+```
+
+#### CD25/ ILR2A
+```{r}
+counts <- counts(dds['ENSG00000134460.11',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleCondition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group))
+q <-  q + theme(legend.position= "none") + theme(text = element_text(size = 20)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + aes(color= group) + theme(legend.position="none") + scale_x_discrete(limits=c("Benign","HGSOC"))
+q <- q + labs(x = "Activin (INHBA) Quantification", y = "Normalized Counts", title = "Expression of CD25/ ILR2A")
+q
+```
+
+
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/activin_CD25.tiff", plot = last_plot())
+write.csv(counts, "~/Desktop/Elizabeth_Paper_Activin/Cooper/Activin/counts_activin_CD25.csv")
+```
