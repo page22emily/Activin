@@ -1,0 +1,28 @@
+---
+title: "Extra_Visualizations"
+output: html_document
+date: "2023-02-15"
+---
+```{r}
+library(ggplot2)
+library(tibble)
+library(tidyr)
+library(RColorBrewer)
+```
+
+```{r}
+df <- read.csv("~/Desktop/Elizabeth_Paper_Activin/TCGA_Low_vs_High_Activin.csv")
+```
+Genes of interest here
+CD3G, CD4, CD8A, CD25, CXCR4, FOXP3
+#need to visualize the LFC in one figure for TCGA High vs Low Activin for the target genes 
+```{r}
+col= "#44bf70"
+Genes <- df$X.1
+Log2FC <- df$log2FoldChange
+ggplot(df, aes(x = Log2FC, y = Genes)) + geom_col(fill= col) + scale_y_discrete(limits=c("CD3G", "CD4", "CD8A", "CD25/ IL2A", "FOXP3", "CXCR4")) + theme(text = element_text(size = 15)) + theme(panel.background = element_blank(), panel.grid.major= element_line()) + theme(axis.line = element_line(colour = "black")) + theme(legend.position="none") + labs(title = "Log2FC of High and Low Activin Groups in TCGA-OV")
+```
+```{r}
+ggsave("~/Desktop/Elizabeth_Paper_Activin/bar_graph_LFC_TCGA.tiff", plot = last_plot())
+```
+
