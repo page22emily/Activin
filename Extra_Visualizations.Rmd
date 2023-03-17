@@ -26,3 +26,394 @@ ggplot(df, aes(x = Log2FC, y = Genes)) + geom_col(fill= col) + scale_y_discrete(
 ggsave("~/Desktop/Elizabeth_Paper_Activin/bar_graph_LFC_TCGA.tiff", plot = last_plot())
 ```
 
+
+---
+title: "Immune_Cell_Type_INHBA_INHBB"
+output: html_document
+date: "2023-03-13"
+---
+
+```{r}
+x <- read.csv("~/Desktop/cbioportal_z_score_and_immune.csv")
+```
+
+```{r}
+INHBA <- x$INHBA
+CD8 <- x$CD8..T
+
+tiff("~/Desktop/correlation_INHBA_CD8.tiff")
+
+plot(INHBA, CD8, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(CD8 ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+
+```{r}
+# Pearson correlation
+cor(INHBA, CD8, method= "pearson")
+```
+
+```{r}
+Treg <- x$Treg
+
+tiff("~/Desktop/correlation_INHBA_Treg.tiff")
+
+plot(INHBA, Treg, pch = 19, col = "black")
+
+# Regression line
+abline(lm(Treg ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+```{r}
+# Pearson correlation
+cor(INHBA, Treg, method= "pearson")
+```
+
+```{r}
+B_cells <- x$B.cells
+
+tiff("~/Desktop/correlation_INHBA_B_cells.tiff")
+
+plot(INHBA, B_cells, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(B_cells ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, B_cells, method= "pearson")
+```
+
+```{r}
+Eosinophils <- x$Eosinophils
+
+tiff("~/Desktop/correlation_INHBA_Eosinophils.tiff")
+
+plot(INHBA, Eosinophils, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Eosinophils ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, Eosinophils, method= "pearson")
+```
+
+```{r}
+Macrophages <- x$Macrophages
+
+tiff("~/Desktop/correlation_INHBA_Macrophages.tiff")
+
+plot(INHBA, Macrophages, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Macrophages ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, Macrophages, method= "pearson")
+```
+
+```{r}
+Mast_Cells <- x$Mast.cells
+
+tiff("~/Desktop/correlation_INHBA_Mast_cells.tiff")
+
+plot(INHBA, Mast_Cells, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Mast_Cells ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, Mast_Cells, method= "pearson")
+```
+
+```{r}
+Th <- x$Th
+
+tiff("~/Desktop/correlation_INHBA_Th.tiff")
+
+plot(INHBA, Th, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Th ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, Th, method= "pearson")
+```
+
+```{r}
+Tcm <- x$Tcm
+
+tiff("~/Desktop/correlation_INHBA_Tcm.tiff")
+
+plot(INHBA, Tcm, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Tcm ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, Tcm, method= "pearson")
+```
+
+```{r}
+Tem <- x$Tem
+
+tiff("~/Desktop/correlation_INHBA_Tem.tiff")
+
+plot(INHBA, Tem, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Tem ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, Tem, method= "pearson")
+```
+
+```{r}
+Tfh <- x$Tfh
+
+tiff("~/Desktop/correlation_INHBA_Tfh.tiff")
+
+plot(INHBA, Tfh, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Tfh ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, Tfh, method= "pearson")
+```
+
+```{r}
+Tgd <- x$Tgd
+
+tiff("~/Desktop/correlation_INHBA_Tgd.tiff")
+
+plot(INHBA, Tgd, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Tgd ~ INHBA), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBA, Tgd, method= "pearson")
+```
+
+
+#INHBB
+```{r}
+INHBB <- x$INHBB
+
+tiff("~/Desktop/correlation_INHBB_CD8.tiff")
+
+plot(INHBB, CD8, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(CD8 ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+
+```{r}
+# Pearson correlation
+cor(INHBB, CD8, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Treg.tiff")
+
+plot(INHBB, Treg, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Treg ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+```{r}
+# Pearson correlation
+cor(INHBB, Treg, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_B_cells.tiff")
+
+plot(INHBB, B_cells, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(B_cells ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, B_cells, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Eosinophils.tiff")
+
+plot(INHBB, Eosinophils, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Eosinophils ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, Eosinophils, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Macrophages.tiff")
+
+plot(INHBB, Macrophages, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Macrophages ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, Macrophages, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Mast_cells.tiff")
+
+plot(INHBB, Mast_Cells, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Mast_Cells ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, Mast_Cells, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Th.tiff")
+
+plot(INHBB, Th, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Th ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, Th, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Tcm.tiff")
+
+plot(INHBB, Tcm, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Tcm ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, Tcm, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Tem.tiff")
+
+plot(INHBB, Tem, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Tem ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, Tem, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Tfh.tiff")
+
+plot(INHBB, Tfh, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Tfh ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, Tfh, method= "pearson")
+```
+
+```{r}
+tiff("~/Desktop/correlation_INHBB_Tgd.tiff")
+
+plot(INHBB, Tgd, pch = 19, col = "lightblue")
+
+# Regression line
+abline(lm(Tgd ~ INHBB), col = "red", lwd = 3)
+
+dev.off()
+```
+
+```{r}
+# Pearson correlation
+cor(INHBB, Tgd, method= "pearson")
+```
+
+
